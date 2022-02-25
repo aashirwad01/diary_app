@@ -1,24 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+
+
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
+import { BrowserRouter as Router,Routes,Route,useRoutes, useLocation, useParams} from 'react-router-dom';
+import { responsiveFontSizes } from '@mui/material';
+
+import AddDiary from "./pages/AddDiary";
+import DashBoard from "./pages/DashBoard";
+import NavBar from "./components/cardDashboard/NavBar";
+import SandBox from "./pages/sandbox/SandBox";
+
+
+
+let theme = createTheme();
+theme = responsiveFontSizes(theme);
+
+const Board = () => {
+  
+  let routes = useRoutes([
+    { path: "/", element: <> <NavBar/> <DashBoard /></>  },
+    { path: "/add", element: <> <NavBar /> <AddDiary />
+    </> },
+     { path: "/edit/:id", element: <> <NavBar /> <AddDiary />
+     </> },
+    { path: "/sandbox", element: <> <NavBar/> <SandBox /></>  },
+    // ...
+  ]);
+  return routes;
+};
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Router>
+    
+    <Board/>
+    </Router>
+    
+    
+  </ThemeProvider>
+    
   );
 }
 
