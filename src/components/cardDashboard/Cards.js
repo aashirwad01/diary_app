@@ -3,7 +3,8 @@ import CardComponent from './CardComponent'
 import Masonry from 'react-masonry-css'
 import { Box, Container } from '@mui/material'
 import { useSelector } from 'react-redux'
-
+import { format } from 'date-fns'
+import { toast } from "react-toastify";
 
 const breakpoints={
   default:3,
@@ -18,13 +19,82 @@ const breakpoints={
 
 export default function Cards({cardsall}) {
   const tabselected=useSelector(state=>state.filtertab.data)
+  const dateselected = useSelector(state => { if(tabselected==='date') {
+    
+    return state.filtertab.todate
+}
+return null
+})
+    
+    
+if(tabselected ==='date'){
+    
+  if(isNaN(dateselected)){
+    console.log('kk')
+    toast.error('Invalid Date selected')
+    cardstoprint=cardsall
+  }
+ 
+  if(!isNaN(dateselected)){
+    
+    
+  var datesel= format(dateselected,'dd')
+  var monthsel = format(dateselected,'MMMM')
+  var yearsel=format(dateselected,'yyyy')
   
-  if(tabselected !=='all'){
+  console.log(cardsall.filter(evt => format(evt.todate,'MMMM dd, yyyy ') ===format(dateselected , 'MMMM dd, yyyy ')))
+
+  cardstoprint=cardsall.filter(evt => format(evt.todate,'MMMM dd, yyyy ') ===format(dateselected , 'MMMM dd, yyyy '))
+  
+  if(cardstoprint.length){
+    toast.success("Date matched showing All Entries")
+  }
+ else if(cardstoprint.length===0){
+    cardstoprint=cardsall.filter(evt => format(evt.todate,'yyyy') ===yearsel)
+
+    if(cardstoprint.length){
+      toast.info('Showing Entries where year Matched')
+    }
+    else if(cardstoprint.length===0){
+      cardstoprint=cardsall.filter(evt => format(evt.todate,'MMMM') ===monthsel)
+      if(cardstoprint.length){
+        toast.info('Showing Entries where month Matched')
+      }
+
+      else if(cardstoprint.length===0){
+        cardstoprint=cardsall.filter(evt => format(evt.todate,'dd') ===datesel)
+        if(cardstoprint.length){
+          toast.info('Showing Entries where Date Matched')
+        }
+        else if(cardstoprint.length===0){
+          cardstoprint=cardsall
+          toast.error('Nothing matched showing all entries')
+        }
+      }
+    }
+
+
+
+   
+    
+    
+  }
+  }
+ 
+  
+  // console.log(cardsall.filter(evt => evt.category ===tabselected))
+ 
+
+}
+  
+else if(tabselected !=='all' ){
     var cardstoprint= cardsall.filter(evt => evt.category ===tabselected)
     
    
   }
-  else{
+  
+  
+else{
     cardstoprint=cardsall
   }
  

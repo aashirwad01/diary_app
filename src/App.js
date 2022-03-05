@@ -10,7 +10,7 @@ import AddDiary from "./pages/AddDiary";
 import DashBoard from "./pages/DashBoard";
 import NavBar from "./components/cardDashboard/NavBar";
 import SandBox from "./pages/sandbox/SandBox";
-
+import { ToastContainer } from "react-toastify";
 
 
 let theme = createTheme();
@@ -34,6 +34,7 @@ const Board = () => {
 function App() {
   return (
     <ThemeProvider theme={theme}>
+        <ToastContainer position="bottom-right" theme="colored" />
     <CssBaseline />
     <Router>
     

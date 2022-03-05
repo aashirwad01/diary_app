@@ -4,6 +4,7 @@ export const FILTER_PERSONAL='FILTER_PERSONAL'
 export const FILTER_MISTAKES='FILTER_MISTAKES'
 export const FILTER_RANDOM='FILTER_RANDOM'
 export const FILTER_ALL='FILTER_ALL'
+export const FILTER_DATE = 'FILTER_DATE'
 
 
 const initialState ={
@@ -41,6 +42,14 @@ export default function sidebarReducer(state=initialState,action){
             return{
                 ...state,
                 data:'all'
+            }
+        case FILTER_DATE:
+           
+            return {
+                ...state,
+                data:'date',
+                todate:new Date(action.payload)
+                
             }
     
         default:

@@ -6,13 +6,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import cuid from 'cuid';
 import { createCard, updateCard } from '../components/cardDashboard/cardActions';
+import { purple } from '@mui/material/colors';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+import { toast } from "react-toastify";
+import { ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material";
+
+
+
 
 export default function AddDiary() {
 
   let navigate = useNavigate();
   const dispatch = useDispatch()
   const {id}=useParams()
-  console.log(id)
+  
   var val;
   var selectedEvent = useSelector((state) =>{
     
@@ -36,11 +46,14 @@ export default function AddDiary() {
   const [titleError,setTitleError]=useState(false)
   const [detailsError, setDetailsError] = useState(false)
   const [categoryError,setCategoryError]=useState(false)
+  const [dateError,setDateError]= useState(false)
+  const [todateValue,setToDatevalue]=useState('')
 
   const initialValues= val ?? {
     title:'',
     category:'',
     details:'',
+    
   }
 
   const [values,setValues]=useState(initialValues)
@@ -52,8 +65,11 @@ export default function AddDiary() {
     setDetailsError(false)
     setTitleError(false)
     setCategoryError(false)
+    setDateError(false)
 
-    if((values.title!=='')&&(values.details!=='')&&(values.category!==''))
+    console.log(values)
+
+    if((values.title!=='')&&(values.details!=='')&&(values.category!=='') && (todateValue!==''))
     {
       
       
@@ -61,15 +77,18 @@ export default function AddDiary() {
       ? dispatch(updateCard({ ...val, ...values })): dispatch(createCard({
         ...values,
         id: cuid(),
+        todate:todateValue
         
       }));
       navigate('/')
     }
 
     else{
+    toast.error('Please fill all the values')
     setDetailsError(true)
     setTitleError(true)
     setCategoryError(true)
+    setDateError(true)
     }
 
 
@@ -83,6 +102,8 @@ export default function AddDiary() {
     function handleInputChange(e) {
       const { name, value } = e.target;
       setValues({ ...values, [name]: value });
+     
+      
     }
 
     
@@ -96,6 +117,7 @@ export default function AddDiary() {
     //   console.log(title,details,category)
     
   return (
+   
     <Container sx={{marginTop:10,
       marginLeft:'1vw',
       display:'block'}}>
@@ -109,6 +131,28 @@ export default function AddDiary() {
 
       </Typography>
       <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+        
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+          disableFuture
+          
+          label="Select Date"
+          openTo="year"
+          views={['year', 'month', 'day']}
+          value={todateValue}
+          name='todate' 
+          onChange={(e) =>{
+            setToDatevalue(e)
+           
+          
+          } }
+          variant='outlined'
+        
+        
+          error={dateError}
+          renderInput={(params) => <TextField   {...params} />}
+        />
+      </LocalizationProvider>
      <TextField
       
      onChange={(e) => handleInputChange(e)}
@@ -209,5 +253,6 @@ export default function AddDiary() {
      </form>
 
     </Container>
+   
   )
 }

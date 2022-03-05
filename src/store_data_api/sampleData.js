@@ -1,5 +1,6 @@
 export const sampleData = [
     {
+        todate:new Date('2020-03-05'),
         id: '1',
         title: 'Trip to Empire State building',
         category: 'work',
@@ -7,6 +8,7 @@ export const sampleData = [
         
     },
     {
+        todate:new Date('2020-03-07'),
         id: '2',
         title: 'Trip to Punch and Judy Pub',
         category: 'personal',
@@ -14,6 +16,7 @@ export const sampleData = [
         
     },
     {
+        todate:new Date('2020-08-05'),
         id: '3',
         title: 'Muh food liye',
         category: 'mistakes',
@@ -21,6 +24,7 @@ export const sampleData = [
         
     },
     {
+        todate:new Date('2022-03-05'),
         id: '4',
         title: 'RamDhun',
         category: 'random',

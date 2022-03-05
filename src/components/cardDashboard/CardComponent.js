@@ -5,7 +5,7 @@ import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCard } from './cardActions';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import { format } from "date-fns";
 
 
 export default function CardComponent({cardall}) {
@@ -51,14 +51,23 @@ export default function CardComponent({cardall}) {
         </Box>
     }
     title={cardall.title}
-    subheader={cardall.category}
+    subheader={`${cardall.category}  `}
     />
 
-    <CardContent>
-        <Typography variant="body2" color="textSecondary" >
-         {cardall.details}
+<CardContent>
+    <Typography color="textSecondary">
+        {format(cardall.todate,'MMMM dd, yyyy ')}
+        
         </Typography>
     </CardContent>
+
+    <CardContent>
+        <Typography variant="body2"  >
+         {cardall.details}
+        </Typography>
+       
+    </CardContent>
+    
 </Card>
   </Box>
   )
