@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { FILTER_ALL, FILTER_DATE, FILTER_MISTAKES, FILTER_PERSONAL, FILTER_RANDOM, FILTER_WORK } from './sidebarReducer';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -17,14 +17,25 @@ export default function SideBar() {
       setValue(newValue);
     };
 
+    const initialRender = useRef(true)
+
     useEffect(() => {
-      console.log(`${dateval} value 2`)
+
+      if(initialRender.current){
+        initialRender.current = false;
+      }
+
+      else{
+        console.log(`${dateval} value 2`)
 
       dispatch({
         type:FILTER_DATE,
         payload:dateval
       
       } )
+      }
+
+      
     }, [dateval])
     
 
