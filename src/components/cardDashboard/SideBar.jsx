@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { FILTER_ALL, FILTER_DATE, FILTER_MISTAKES, FILTER_PERSONAL, FILTER_RANDOM, FILTER_WORK } from './sidebarReducer';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -17,17 +17,24 @@ export default function SideBar() {
       setValue(newValue);
     };
 
+    useEffect(() => {
+      console.log(`${dateval} value 2`)
+
+      dispatch({
+        type:FILTER_DATE,
+        payload:dateval
+      
+      } )
+    }, [dateval])
+    
+
     
 
     const handleDateChange = ()=> {
      
       
      
-      dispatch({
-        type:FILTER_DATE,
-        payload:dateval
-      
-      } )}
+      }
   
     return (
       <Box
@@ -64,13 +71,25 @@ export default function SideBar() {
           views={['year', 'month', 'day']}
          
           onChange={(newValue) => {
+
+            try{
+             
             setDateVal(newValue);
+            console.log(`${dateval} value 1`)
+            
+
+            }catch(e){
+              console.log(e)
+            }
+            
+
+            // use async await
            
           }}
           value={dateval}
           renderInput={(params) => <TextField {...params} />}
         />
-         <Button onClick={()=>handleDateChange()} >Submit Date</Button>
+         {/* <Button onClick={()=>handleDateChange()} >Submit Date</Button> */}
       </LocalizationProvider>
      
       </>

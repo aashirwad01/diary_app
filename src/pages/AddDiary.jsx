@@ -49,6 +49,8 @@ export default function AddDiary() {
   const [dateError,setDateError]= useState(false)
   const [todateValue,setToDatevalue]=useState('')
 
+  const [dateval,setDateVal] = useState('')
+
   const initialValues= val ?? {
     title:'',
     category:'',
@@ -188,6 +190,18 @@ export default function AddDiary() {
      value={values.details}
      error={detailsError}
      />
+
+     {/* <TextField type='date' onChange={(e)=>{{
+       
+       console.log(e.target.value)
+       setDateVal(e.target.value)
+
+       console.log(dateval)
+   }
+   
+   }} />
+
+  <h1>{dateval}</h1> */}
 
     <FormControl
     sx={{marginTop:4,

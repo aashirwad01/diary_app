@@ -2,6 +2,9 @@ import { AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Tab
 import React from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal } from '../modals/modalReducer';
+import { signInUser, signOutUser } from '../auth/authActions';
 
 
 const settings = [
@@ -41,13 +44,16 @@ function LinkTab(props) {
   }
 
 export default function NavBar() {
+
+  const dispatch = useDispatch()
   let navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     // const [toggleMenu,setToggleMenu]=React.useState(false)
     const [tabvalue, setTabValue] = React.useState(0);
-    const [authenticated,setAuthentication]=React.useState(false);
+    // const [authenticated,setAuthentication]=React.useState(false);
 
+    const {authenticated} = useSelector(state=>state.auth)
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -82,7 +88,9 @@ export default function NavBar() {
       console.log(menuVal)
       
       if(menuVal==='LogOut'){
-        setAuthentication(false)
+        dispatch(signOutUser())
+        // setAuthentication(false)
+        navigate('/')
       }
       setAnchorElUser(null);
     };
@@ -118,7 +126,7 @@ export default function NavBar() {
               {settings.map((setting) => (
                
                 <MenuItem key={setting.id} onClick={handleCloseUserMenu}>
-                  { authenticated ? <Typography component={'span'} textAlign="center">{setting.value}</Typography> : <Typography component={'span'}  textAlign="center">{setting.id==='3'?<Typography component={'span'}  onClick={()=>setAuthentication(true)}>Login
+                  { authenticated ? <Typography component={'span'} textAlign="center">{setting.value}</Typography> : <Typography component={'span'}  textAlign="center">{setting.id==='3'?<Typography component={'span'}  onClick={()=> dispatch( openModal({modalType:'LoginForm'}) )}>Login
             </Typography>:setting.value}</Typography> }
                 </MenuItem>
               ))}
@@ -129,7 +137,10 @@ export default function NavBar() {
             </Menu>
           </Box>
           {!authenticated && <Button variant="contained"  color='secondary'
-           onClick={()=>setAuthentication(true)}>Login
+           onClick={()=>{
+            dispatch(openModal({modalType:'LoginForm'}))
+           
+           }}>Login
             </Button>}
            
           {authenticated &&
