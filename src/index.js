@@ -7,9 +7,14 @@ import createCache from '@emotion/cache';
 
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
+import { loadCards } from './components/cardDashboard/cardActions';
 import { configureStore } from './store_data_api/store/configureStore';
 
+
+
 const store = configureStore()
+
+store.dispatch( loadCards() )
 
 export const muiCache = createCache({
     'key': 'mui',

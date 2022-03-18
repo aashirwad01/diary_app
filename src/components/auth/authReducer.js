@@ -4,7 +4,7 @@ const initialState ={
     authenticated :true,
     currentUser:{
         email: 'dd@gmail.com' ,
-        photoURL:'/assets/user.png'
+        
 
 },
 }

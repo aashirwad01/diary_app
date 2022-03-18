@@ -54,6 +54,8 @@ export default function NavBar() {
     // const [authenticated,setAuthentication]=React.useState(false);
 
     const {authenticated} = useSelector(state=>state.auth)
+    const {currentUser} = useSelector(state=>state.auth)
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -103,7 +105,7 @@ export default function NavBar() {
             <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}  sx={{ p: 0 }}>
-                <Avatar alt="Aashirwad" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={currentUser.email} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

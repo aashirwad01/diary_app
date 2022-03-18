@@ -13,9 +13,6 @@ const breakpoints={
 
 }
 
-{/* <div>
-          <CardComponent/>
-        </div> */}
 
 export default function Cards({cardsall}) {
   const tabselected=useSelector(state=>state.filtertab.data)
@@ -31,7 +28,9 @@ if(tabselected ==='date'){
     
   if(isNaN(dateselected)){
     console.log('kk')
-    toast.error('Invalid Date selected')
+    toast.error('Invalid Date selected', {
+      toastId:'invalid'
+    })
     cardstoprint=cardsall
   }
  
@@ -47,28 +46,40 @@ if(tabselected ==='date'){
   cardstoprint=cardsall.filter(evt => format(evt.todate,'MMMM dd, yyyy ') ===format(dateselected , 'MMMM dd, yyyy '))
   
   if(cardstoprint.length){
-    toast.success("Date matched showing All Entries")
+    toast.success("Date matched showing All Entries" , {
+      toastId:'success'
+    })
   }
  else if(cardstoprint.length===0){
     cardstoprint=cardsall.filter(evt => format(evt.todate,'yyyy') ===yearsel)
 
     if(cardstoprint.length){
-      toast.info('Showing Entries where year Matched')
+      toast.info('Showing Entries where year Matched', {
+        toastId:'year match'
+      })
     }
     else if(cardstoprint.length===0){
       cardstoprint=cardsall.filter(evt => format(evt.todate,'MMMM') ===monthsel)
       if(cardstoprint.length){
-        toast.info('Showing Entries where month Matched')
+        toast.info('Showing Entries where month Matched' , {
+          toastId:'month match'
+        })
       }
 
       else if(cardstoprint.length===0){
         cardstoprint=cardsall.filter(evt => format(evt.todate,'dd') ===datesel)
         if(cardstoprint.length){
-          toast.info('Showing Entries where Date Matched')
+          toast.info('Showing Entries where Date Matched'
+          , {
+            toastId:'date match'
+          })
         }
         else if(cardstoprint.length===0){
           cardstoprint=cardsall
-          toast.error('Nothing matched showing all entries')
+          toast.error('Nothing matched showing all entries'
+          , {
+            toastId:'no match'
+          })
         }
       }
     }
