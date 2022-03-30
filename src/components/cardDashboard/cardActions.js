@@ -18,6 +18,13 @@ export function loadCards(){
     }
 }
 
+export function listenToCards(cardsall){
+    return {
+        type:FETCH_CARDS,
+        payload:cardsall
+    }
+}
+
 export function createCard(event){
     return{
         type:CREATE_CARD,

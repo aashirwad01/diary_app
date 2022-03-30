@@ -12,6 +12,7 @@ import NavBar from "./components/cardDashboard/NavBar";
 import SandBox from "./pages/sandbox/SandBox";
 import { ToastContainer } from "react-toastify";
 import ModalManager from "./components/modals/ModalManager";
+import ErrorComponent from "./components/errors/ErrorComponent";
 
 
 let theme = createTheme();
@@ -26,6 +27,7 @@ const Board = () => {
      { path: "/edit/:id", element: <> <NavBar /> <AddDiary />
      </> },
     { path: "/sandbox", element: <> <NavBar/> <SandBox /></>  },
+    { path: "/error", element: <> <NavBar/> <ErrorComponent /></>  },
     // ...
   ]);
   return routes;

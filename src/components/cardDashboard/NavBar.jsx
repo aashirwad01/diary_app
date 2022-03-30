@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../modals/modalReducer';
 import { signInUser, signOutUser } from '../auth/authActions';
+import { toast } from 'react-toastify';
+import { signOutFirebase } from '../firestore/firebaseServices';
 
 
 const settings = [
@@ -56,6 +58,17 @@ export default function NavBar() {
     const {authenticated} = useSelector(state=>state.auth)
     const {currentUser} = useSelector(state=>state.auth)
 
+   async function handleSignOut(){
+     try{
+       await signOutFirebase();
+       navigate('/')
+
+     }catch(error){
+       toast.error(error.message)
+     }
+
+    }
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -87,10 +100,10 @@ export default function NavBar() {
         var menuVal =menuValDom.innerText
       }
      
-      console.log(menuVal)
+     
       
       if(menuVal==='LogOut'){
-        dispatch(signOutUser())
+       handleSignOut()
         // setAuthentication(false)
         navigate('/')
       }
@@ -105,7 +118,7 @@ export default function NavBar() {
             <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}  sx={{ p: 0 }}>
-                <Avatar alt={currentUser.email} src="/static/images/avatar/2.jpg" />
+                <Avatar alt={currentUser ?currentUser.email:'e'} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -128,7 +141,7 @@ export default function NavBar() {
               {settings.map((setting) => (
                
                 <MenuItem key={setting.id} onClick={handleCloseUserMenu}>
-                  { authenticated ? <Typography component={'span'} textAlign="center">{setting.value}</Typography> : <Typography component={'span'}  textAlign="center">{setting.id==='3'?<Typography component={'span'}  onClick={()=> dispatch( openModal({modalType:'LoginForm'}) )}>Login
+                  { authenticated ? <Typography component={'span'} textAlign="center" onClick={()=>navigate(`/${setting.value}`)}>{setting.value}</Typography> : <Typography component={'span'}  textAlign="center">{setting.id==='3'?<Typography component={'span'}  onClick={()=> dispatch( openModal({modalType:'LoginForm'}) )}>Login
             </Typography>:setting.value}</Typography> }
                 </MenuItem>
               ))}
@@ -143,6 +156,12 @@ export default function NavBar() {
             dispatch(openModal({modalType:'LoginForm'}))
            
            }}>Login
+            </Button>}
+            {!authenticated && <Button variant="contained"  color='secondary'
+           onClick={()=>{
+            dispatch(openModal({modalType:'RegisterForm'}))
+           
+           }}>Register
             </Button>}
            
           {authenticated &&

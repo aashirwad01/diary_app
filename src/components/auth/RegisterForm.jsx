@@ -2,7 +2,7 @@ import React from 'react'
 import ModalWrapper from '../modals/ModalWrapper'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
-import { ErrorMessage, Field, Formik, useField } from 'formik'
+import {  Field, Formik, useField } from 'formik'
 import { closeModal } from '../modals/modalReducer'
 import { Form } from 'formik'
 import { FormControl } from '@mui/material'
@@ -10,7 +10,7 @@ import { TextField } from '@mui/material'
 import { Alert } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import { signInUser } from './authActions'
-import { signInWithEmail } from '../firestore/firebaseServices'
+import { registerInFirebase, signInWithEmail } from '../firestore/firebaseServices'
 
 
 const MyTextInput = ({label,...props}) => {
@@ -32,7 +32,7 @@ const MyTextInput = ({label,...props}) => {
 
 
 
-export default function LoginForm() {
+export default function RegisterForm() {
 
    
     
@@ -41,7 +41,7 @@ export default function LoginForm() {
     const dispatch = useDispatch()
   return (
    <ModalWrapper 
-   header='Sign In to Diary App' >
+   header='Register to Diary App' >
 
    <Formik
    initialValues={{email:'',password:''}}
@@ -49,17 +49,17 @@ export default function LoginForm() {
        email:Yup.string().required().email(),
        password:Yup.string().required()
    })}
-   onSubmit ={ async (values,{setSubmitting , setErrors})=>{
+   onSubmit ={ async (values,{setSubmitting,setErrors})=>{
        try{
-        await signInWithEmail(values)
+        await registerInFirebase(values)
         // dispatch(signInUser(values))
         setSubmitting(false)
         dispatch(closeModal())
        
 
        }catch(error){
-           
-           setErrors({auth:'Problem with Email or Password'})
+        
+           setErrors({auth:error.message})
         setSubmitting(false)
         console.log(error)
 
@@ -94,7 +94,7 @@ export default function LoginForm() {
    
     variant="contained">
 
-       Login </LoadingButton>
+       Register </LoadingButton>
 
                 
                 

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteCard } from './cardActions';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format } from "date-fns";
+import { deleteCardinFirestore } from '../firestore/firestoreService';
 
 
 export default function CardComponent({cardall}) {
@@ -43,7 +44,11 @@ export default function CardComponent({cardall}) {
             <ModeEditOutlineIcon />
         </IconButton>
 
-        <IconButton onClick={()=>dispatch(deleteCard(cardall.id))}>
+        <IconButton onClick={()=> deleteCardinFirestore(cardall.id)
+          
+          // dispatch(deleteCard(cardall.id))
+          
+          }>
             <DeleteOutlineIcon />
         </IconButton>
        

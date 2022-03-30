@@ -14,7 +14,7 @@ import { configureStore } from './store_data_api/store/configureStore';
 
 const store = configureStore()
 
-store.dispatch( loadCards() )
+// store.dispatch( loadCards() )
 
 export const muiCache = createCache({
     'key': 'mui',

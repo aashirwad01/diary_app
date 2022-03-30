@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Radio } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import cuid from 'cuid';
-import { createCard, updateCard } from '../components/cardDashboard/cardActions';
+import { createCard, listenToCards, updateCard } from '../components/cardDashboard/cardActions';
 import { purple } from '@mui/material/colors';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -13,6 +13,10 @@ import DatePicker from '@mui/lab/DatePicker';
 import { toast } from "react-toastify";
 import { ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material";
+import useFirestoreDoc from '../components/hooks/useFirestoreDoc';
+import { addCardToFirestore, listenToCardFromFirestore, updateCardInFirestore } from '../components/firestore/firestoreService';
+import LoadingComponent from '../components/asynComponents/LoadingComponent';
+import CardPlaceholder from '../components/asynComponents/CardPlaceholder';
 
 
 
@@ -21,6 +25,7 @@ export default function AddDiary() {
 
   let navigate = useNavigate();
   const dispatch = useDispatch()
+  const {loading ,error} = useSelector(state => state.async)
   const {id}=useParams()
   
   var val;
@@ -49,7 +54,7 @@ export default function AddDiary() {
   const [dateError,setDateError]= useState(false)
   const [todateValue,setToDatevalue]=useState('')
 
-  const [dateval,setDateVal] = useState('')
+  
 
   const initialValues= val ?? {
     title:'',
@@ -61,37 +66,62 @@ export default function AddDiary() {
   const [values,setValues]=useState(initialValues)
  
 
-  const handleSubmit =(e)=>{
+  const handleSubmit = async (e)=>{
     e.preventDefault() //default action of a form being submitted is refresh the page so prevent default is used
+
+
+    try{
 
     setDetailsError(false)
     setTitleError(false)
     setCategoryError(false)
     setDateError(false)
-
+    values.todate=todateValue;
     console.log(values)
 
     if((values.title!=='')&&(values.details!=='')&&(values.category!=='') && (todateValue!==''))
     {
-      
+      // values.todate=todateValue;
       
       val
-      ? dispatch(updateCard({ ...val, ...values })): dispatch(createCard({
-        ...values,
-        id: cuid(),
-        todate:todateValue
+      ? await updateCardInFirestore(values)
+      
+      // dispatch(updateCard({ ...val, ...values }))
+      
+      :  await addCardToFirestore(values)
+      
+      // dispatch(createCard({
+      //   ...values,
+      //   id: cuid(),
+      //   todate:todateValue
         
-      }));
+      // }));
       navigate('/')
     }
+      
 
-    else{
+    }catch(error){
+
     toast.error('Please fill all the values')
+    console.log(error)
     setDetailsError(true)
     setTitleError(true)
     setCategoryError(true)
     setDateError(true)
+
+
+
     }
+    
+    }
+
+    // else{
+    // toast.error('Please fill all the values')
+    // setDetailsError(true)
+    // setTitleError(true)
+    // setCategoryError(true)
+    // setDateError(true)
+    // }
 
 
 
@@ -99,7 +129,7 @@ export default function AddDiary() {
 
     
 
-  }
+  
 
     function handleInputChange(e) {
       const { name, value } = e.target;
@@ -117,6 +147,27 @@ export default function AddDiary() {
     //     body:JSON.stringify({title,details,category})
     //   }).then(()=>history.push('/'))
     //   console.log(title,details,category)
+
+
+    console.log(id)
+    useFirestoreDoc({
+      shouldExecute : !!id,
+      query:()=> listenToCardFromFirestore(id),
+      data:(cardsall) => dispatch(listenToCards([cardsall])),
+      deps:[id,dispatch]
+    })
+
+
+   
+
+  if (loading ) return <div>
+  <LoadingComponent/>
+  
+</div>
+
+if(error) return  <Navigate to={'/error'} />
+
+
     
   return (
    
