@@ -149,7 +149,7 @@ export default function AddDiary() {
     //   console.log(title,details,category)
 
 
-    console.log(id)
+    // console.log(id)
     useFirestoreDoc({
       shouldExecute : !!id,
       query:()=> listenToCardFromFirestore(id),

@@ -1,6 +1,6 @@
 import { Link } from '@mui/material'
 import { Grid } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { asyncActionError, asyncActionFinish, asyncActionStart } from '../components/async/asyncReducer'
 import CardPlaceholder from '../components/asynComponents/CardPlaceholder'
@@ -8,11 +8,13 @@ import LoadingComponent from '../components/asynComponents/LoadingComponent'
 import { listenToCards } from '../components/cardDashboard/cardActions'
 import Cards from '../components/cardDashboard/Cards'
 import SideBar from '../components/cardDashboard/SideBar'
-import { dataFromSnapshot, getEventsFromFirestore, listenToCardsFromFirestore } from '../components/firestore/firestoreService'
+import {currentAppUser} from '../components/firestore/firebaseServices'
+import  { dataFromSnapshot, getEventsFromFirestore, listenToCardsFromFirestore } from '../components/firestore/firestoreService'
 import useFirestoreCollection from '../components/hooks/useFirestoreCollection'
+import useHandleUserCard from '../components/hooks/useHandleuserCard'
 
 
-export default function DashBoard() {
+export default function DashBoard({handleCardload}) {
 
   const dispatch = useDispatch()
 
@@ -45,6 +47,19 @@ export default function DashBoard() {
     
   })
 
+  const user = currentAppUser()
+
+
+
+  // useEffect(() => {
+    
+    
+    
+  // }, [currentAppUser])
+  
+  
+
+
 {/* <LoadingComponent/> */}
 
 
@@ -63,7 +78,7 @@ export default function DashBoard() {
        <SideBar />
       </Grid>
       <Grid item xs={8}>
-        <Cards cardsall={cardsall} />
+        <Cards cardsall={cardsall} user ={user}  />
       </Grid>
     </Grid>
   )

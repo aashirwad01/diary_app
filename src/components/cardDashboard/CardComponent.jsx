@@ -23,8 +23,8 @@ export default function CardComponent({cardall}) {
     }
 
     const handleEditCard=(e,val)=>{
-      console.log("hei")
-      console.log(val)
+      // console.log("hei")
+      // console.log(val)
       navigate(`/edit/${val}`)
         
     }

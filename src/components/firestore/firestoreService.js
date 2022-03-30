@@ -31,8 +31,8 @@ export function listenToCardFromFirestore(cardallId){
 
 export function addCardToFirestore(cardall){
     var user= firebase.auth().currentUser
-    console.log(user)
-    console.log(cardall)
+    // console.log(user.email)
+    // console.log(cardall)
     return db.collection('cardsall').add({
         ...cardall,
         todate:cardall.todate,
@@ -40,7 +40,7 @@ export function addCardToFirestore(cardall){
         category: cardall.category,
         details: cardall.details,
 
-        // cardOwner:user.currentUser.email
+        cardOwner:user.email
         
     })
 }
@@ -52,3 +52,4 @@ export function updateCardInFirestore(cardall){
 export function deleteCardinFirestore(cardallId){
     return db.collection('cardsall').doc(cardallId).delete();
 }
+

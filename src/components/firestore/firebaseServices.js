@@ -1,6 +1,7 @@
 import firebase from '../config/firebase'
 
 export function signInWithEmail(creds){
+    
     return firebase
             .auth()
             .signInWithEmailAndPassword(creds.email,creds.password)
@@ -23,5 +24,18 @@ export async function registerInFirebase(creds){
         throw error;
     }
 
+}
+
+export function currentAppUser(){
+    
+    const user = firebase.auth().currentUser;
+
+if (user) {
+    console.log("user aaya", user.email)
+  return user.email
+} else {
+    console.log(" no user aaya")
+  return null
+}
 }
            

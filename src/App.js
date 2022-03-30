@@ -8,26 +8,31 @@ import { responsiveFontSizes } from '@mui/material';
 
 import AddDiary from "./pages/AddDiary";
 import DashBoard from "./pages/DashBoard";
+import HomePage from "./pages/HomePage";
 import NavBar from "./components/cardDashboard/NavBar";
 import SandBox from "./pages/sandbox/SandBox";
 import { ToastContainer } from "react-toastify";
 import ModalManager from "./components/modals/ModalManager";
 import ErrorComponent from "./components/errors/ErrorComponent";
+import { currentAppUser } from "./components/firestore/firebaseServices";
 
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
+
+
 const Board = () => {
   
   let routes = useRoutes([
-    { path: "/", element: <> <NavBar/> <DashBoard /></>  },
+    { path: "/home", element: <> <HomePage/> </>  },
+    { path: "/", element: <> <NavBar /> <DashBoard  /></>  },
     { path: "/add", element: <> <NavBar /> <AddDiary />
     </> },
-     { path: "/edit/:id", element: <> <NavBar /> <AddDiary />
+     { path: "/edit/:id", element: <> <NavBar  /> <AddDiary />
      </> },
-    { path: "/sandbox", element: <> <NavBar/> <SandBox /></>  },
-    { path: "/error", element: <> <NavBar/> <ErrorComponent /></>  },
+    { path: "/sandbox", element: <> <NavBar /> <SandBox /></>  },
+    { path: "/error", element: <> <NavBar /> <ErrorComponent /></>  },
     // ...
   ]);
   return routes;
